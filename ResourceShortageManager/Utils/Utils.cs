@@ -32,24 +32,6 @@ namespace ResourceShortageManager
             return result;
         }
 
-        // public static object PromptUserEnum<T>(string message, out T result) where T : struct
-        // {
-        //     string? input;
-
-        //     do
-        //     {
-        //         Console.WriteLine(message + " (or type 'exit' to cancel):");
-        //         input = Console.ReadLine().Replace(" ", "").ToLower();
-        //         if (input?.ToLower() == "exit")
-        //         {
-        //             result = default;
-        //             return null;
-        //         }
-        //     } while (!Enum.TryParse(input, ignoreCase: true, out result));
-
-        //     return result;
-        // }
-
         public static bool PromptUserEnum<T>(string message, out T result) where T : struct
         {
             string? input;
