@@ -24,7 +24,7 @@ class Program
             return;
         }
 
-        ShortageManager shortageManager = new ShortageManager(currentUser);
+        ShortageManager shortageManager = new ShortageManager(currentUser, new ShortageFileHandler("shortages.json"));
 
         string command = string.Empty;
         while (command != "exit" || command != "q" || command != "quit")

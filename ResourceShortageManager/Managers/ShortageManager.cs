@@ -4,23 +4,27 @@ using System.Linq;
 
 using ResourceShortageManager.Models;
 using ResourceShortageManager.Services;
+using ResousceShortageManager.Services;
 
 namespace ResourceShortageManager.Managers;
 
 public class ShortageManager
 {
-    private ShortageService shortageService = new ShortageService();
-    private List<Shortage> shortages;
-    private string currentUser;
+    private IFileHandler _shortageFileHandler;
+    private string _currentUser;
+    private List<Shortage> _shortages;
 
-    public ShortageManager(string username)
+    public ShortageManager(string username, IFileHandler shortageFileHandler)
     {
-        currentUser = username;
-        shortages = shortageService.LoadShortages();
+        _currentUser = username;
+        _shortageFileHandler = shortageFileHandler;
+        _shortages = _shortageFileHandler.LoadShortages();
     }
 
     public void RegisterShortage()
     {
+        _shortages = _shortageFileHandler.LoadShortages();
+
         var title = Utils.PromptUser("Enter title");
         if (title == null) return;
 
@@ -39,7 +43,7 @@ public class ShortageManager
         var priority = Utils.PromptUserInt("Enter priority");
         if (priority == null) return;
 
-        var existingShortage = shortages.FirstOrDefault(s => s.Title == title && s.Name == currentUser);
+        var existingShortage = _shortages.FirstOrDefault(s => s.Title == title && s.Name == _currentUser);
         if (existingShortage != null)
         {
             if (priority > existingShortage.Priority)
@@ -63,21 +67,23 @@ public class ShortageManager
             var newShortage = new Shortage()
             {
                 Title = title,
-                Name = currentUser,
+                Name = _currentUser,
                 Room = room,
                 Category = category,
                 Priority = (int)priority,
                 CreatedOn = DateTime.Now
             };
-            shortages.Add(newShortage);
+            _shortages.Add(newShortage);
         }
 
-        shortageService.SaveShortages(shortages);
+        _shortageFileHandler.SaveShortages(_shortages);
         Console.WriteLine("Shortage registered successfully.");
     }
 
     public void DeleteShortage()
     {
+        _shortages = _shortageFileHandler.LoadShortages();
+
         var title = Utils.PromptUser("Enter title");
         if (title == null) return;
 
@@ -93,10 +99,10 @@ public class ShortageManager
         );
         if (categoryInput == false) return;
 
-        var shortage = shortages.FirstOrDefault
+        var shortage = _shortages.FirstOrDefault
         (
             s => s.Title == title &&
-            s.Name == currentUser &&
+            s.Name == _currentUser &&
             Enum.Equals(s.Room, room) &&
             Enum.Equals(s.Category, category)
         );
@@ -116,10 +122,10 @@ public class ShortageManager
             return;
         }
 
-        if (shortage.Name == currentUser || currentUser == "admin")
+        if (shortage.Name == _currentUser || _currentUser == "admin")
         {
-            shortages.Remove(shortage);
-            shortageService.SaveShortages(shortages);
+            _shortages.Remove(shortage);
+            _shortageFileHandler.SaveShortages(_shortages);
             Console.WriteLine("Shortage deleted successfully.");
         }
         else
@@ -183,13 +189,13 @@ public class ShortageManager
                     break;
                 case "6":
                     Console.Clear();
-                    var filteredShortages = shortages.Where(s =>
+                    var filteredShortages = _shortages.Where(s =>
                         (string.IsNullOrEmpty(titleFilter) || s.Title.Contains(titleFilter, StringComparison.OrdinalIgnoreCase)) &&
                         (categoryInput == false || Enum.Equals(s.Category, categoryFilter)) &&
                         (roomInput == false || Enum.Equals(s.Room, roomFilter)) &&
                         (!startDate.HasValue || s.CreatedOn >= startDate.Value) &&
                         (!endDate.HasValue || s.CreatedOn <= endDate.Value) &&
-                        (s.Name == currentUser || currentUser == "admin")
+                        (s.Name == _currentUser || _currentUser == "admin")
                     ).OrderByDescending(s => s.Priority).ToList();
 
                     Console.WriteLine("| {0, -20} | {1, -10} | {2, -15} | {3, -12} | {4, -8} | {5, -20} |",

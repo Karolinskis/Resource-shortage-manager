@@ -3,13 +3,18 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using ResourceShortageManager.Models;
+using ResousceShortageManager.Services;
 
 namespace ResourceShortageManager.Services;
 
-public class ShortageService
+public class ShortageFileHandler : IFileHandler
 {
-    // TODO: This should probably be in a configuration file
-    private readonly string _filePath = "shortages.json";
+    private readonly string _filePath;
+
+    public ShortageFileHandler(string filePath)
+    {
+        _filePath = filePath;
+    }
 
     public List<Shortage> LoadShortages()
     {

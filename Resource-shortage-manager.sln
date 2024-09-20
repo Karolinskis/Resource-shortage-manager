@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourceShortageManager", "ResourceShortageManager\ResourceShortageManager.csproj", "{41D30234-D456-4428-BCE4-D6AF695F0DA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ResourceShortageManager.Tests", "ResourceShortageManager.Tests\ResourceShortageManager.Tests.csproj", "{A6C77469-D302-454E-AAB0-218A4679FE12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{41D30234-D456-4428-BCE4-D6AF695F0DA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41D30234-D456-4428-BCE4-D6AF695F0DA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41D30234-D456-4428-BCE4-D6AF695F0DA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6C77469-D302-454E-AAB0-218A4679FE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6C77469-D302-454E-AAB0-218A4679FE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6C77469-D302-454E-AAB0-218A4679FE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6C77469-D302-454E-AAB0-218A4679FE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
