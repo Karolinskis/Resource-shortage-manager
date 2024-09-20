@@ -102,7 +102,6 @@ public class ShortageManager
         var shortage = _shortages.FirstOrDefault
         (
             s => s.Title == title &&
-            s.Name == _currentUser &&
             Enum.Equals(s.Room, room) &&
             Enum.Equals(s.Category, category)
         );
